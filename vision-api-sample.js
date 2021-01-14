@@ -28,6 +28,6 @@ async function quickstart() {
 
 
 
-  //export GOOGLE_APPLICATION_CREDENTIALS="{path}.json"
+  //export GOOGLE_APPLICATION_CREDENTIALS="/Users/anishhegde/Downloads/test-ad5b5-d9c5b7309572.json"
 
   
