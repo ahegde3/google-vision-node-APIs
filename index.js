@@ -6,7 +6,7 @@ var port=3030
 
 
 app.use(express.json())
-async function detection(req,res)
+async function textDetection(req,res)
 { try{
     //const client = new vision.ImageAnnotatorClient();
    
@@ -30,13 +30,51 @@ async function detection(req,res)
 }
 
 
+async function logoDetection(req,res){
+    try{
+    const client=new vision.ImageAnnotatorClient()
+    const imageDesc = await checkError(req, res)
+        console.log(imageDesc)
+ 
+    const [result]=await client.logoDetection(imageDesc.path)
+    const detections=result.logoAnnotations
+    const [ text, ...others ] = detections
+    res.send(`Text: ${ text.description }`)
+      }
+    catch (error) {console.log(error)}  
+
+}
+
+async function labelDetection(req,res){
+    try{
+    const client=new vision.ImageAnnotatorClient()
+    const imageDesc = await checkError(req, res)
+        console.log(imageDesc)
+ 
+    const [result]=await client.labelDetection(imageDesc.path)
+    const detections=result.labelAnnotations
+    var results=[]
+    detections.forEach(element => results.push(element.description))
+    console.log(results)
+    res.send(`Text: ${ results}`)
+      
+      }
+    catch (error) {console.log(error)}  
+
+}
+
+
 app.get('/',(req,res)=>{
     res.send("welcome to mypage")
 })
 
 
 
-app.post("/detect",detection)
+
+app.post("/textDetection",textDetection)
+
+app.post("/logoDetection",logoDetection)
+app.post("/labelDetection",labelDetection)
 
 app.listen(port,()=>{
     console.log(`Listening to port ${port}`)
